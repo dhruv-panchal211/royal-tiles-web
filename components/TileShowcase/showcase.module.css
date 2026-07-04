@@ -1,0 +1,173 @@
+.section {
+  position: relative;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  padding: clamp(4rem, 8vw, 7rem) 0 0;
+  overflow: hidden;
+}
+
+.head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.h2 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 4rem);
+  margin: 0.5rem 0 0;
+}
+
+.h2 em {
+  font-style: italic;
+  color: var(--color-gold);
+}
+
+.hint {
+  margin-top: 1rem;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-cement);
+}
+
+.stage {
+  height: 80vh;
+  width: 100%;
+}
+
+/* drawer */
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(420px, 90vw);
+  background: var(--color-chalk);
+  color: var(--color-slate);
+  padding: 3rem 2.5rem;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -20px 0 60px -20px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  overflow-y: auto;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-cement);
+}
+
+.swatch {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  margin-bottom: 1.75rem;
+  background-color: hsl(var(--hue) 30% 70%);
+  background-image: radial-gradient(
+      circle at 25% 35%,
+      hsl(var(--hue) 55% 40%) 0 8px,
+      transparent 9px
+    ),
+    radial-gradient(circle at 70% 65%, #2a2620 0 6px, transparent 7px),
+    radial-gradient(circle at 50% 85%, #d4a843 0 5px, transparent 6px),
+    radial-gradient(
+      circle at 85% 30%,
+      hsl(calc(var(--hue) + 50deg) 45% 50%) 0 7px,
+      transparent 8px
+    );
+  background-size: 70px 70px, 90px 90px, 60px 60px, 80px 80px;
+}
+
+.dCollection {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-clay);
+}
+
+.dName {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: 2rem;
+  margin: 0.25rem 0 1.5rem;
+}
+
+.spec {
+  margin: 0 0 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.spec div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(42, 38, 32, 0.12);
+  padding-bottom: 0.5rem;
+}
+
+.spec dt {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-cement);
+}
+
+.spec dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.cta {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  background: var(--color-clay);
+  color: var(--color-chalk);
+  font-family: var(--font-dm-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.cta:hover {
+  background: var(--color-slate);
+}
+
+/* mobile fallback grid */
+.mobileGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 1.5rem;
+}
+
+.mobileTile {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: hsl(var(--hue) 30% 65%);
+  background-image: radial-gradient(circle at 30% 30%, #faf6f0 0 4px, transparent 5px),
+    radial-gradient(circle at 70% 60%, #2a2620 0 4px, transparent 5px);
+  background-size: 40px 40px, 50px 50px;
+}

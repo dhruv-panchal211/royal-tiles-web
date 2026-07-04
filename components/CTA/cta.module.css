@@ -1,0 +1,74 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-red);
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  pointer-events: none;
+}
+
+.content .btn {
+  pointer-events: auto;
+}
+
+.h2 {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  margin: 1rem 0 2.5rem;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border: 1px solid var(--color-white);
+  background: transparent;
+  color: var(--color-white);
+  font-family: var(--font-dm-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.btn:hover {
+  background: var(--color-white);
+  color: var(--color-red);
+}
+
+.primary {
+  background: var(--color-white);
+  color: var(--color-red);
+}
+
+.primary:hover {
+  background: var(--color-ink);
+  color: var(--color-white);
+  border-color: var(--color-ink);
+}

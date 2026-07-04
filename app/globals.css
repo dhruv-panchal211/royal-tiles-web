@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand palette — from the Royal Tiles logo */
+  --color-red: #e1241c; /* primary accent */
+  --color-red-deep: #b5160f; /* hover / pressed */
+  --color-ink: #1c1b1a; /* charcoal text (used instead of pure black) */
+  --color-grey: #8a8c8f; /* secondary text */
+  --color-paper: #f5f2ed; /* soft light section background */
+  --color-white: #ffffff;
+  --color-line: #e6e1d9; /* hairline borders */
+
+  /* Legacy token names mapped onto the new brand palette so every component
+     that references them picks up the new theme automatically. */
+  --color-clay: var(--color-red);
+  --color-gold: var(--color-red);
+  --color-slate: var(--color-ink);
+  --color-sand: var(--color-paper);
+  --color-chalk: var(--color-white);
+  --color-cement: var(--color-grey);
+  --color-indigo: #5b5f66;
+
+  --text-caption: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-white);
+  color: var(--color-ink);
+  font-family: var(--font-dm-sans), sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Magazine display type */
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Lenis smooth-scroll baseline */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Utility: small uppercase caption / label */
+.caption {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+::selection {
+  background: var(--color-red);
+  color: var(--color-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

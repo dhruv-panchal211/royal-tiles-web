@@ -1,0 +1,115 @@
+.section {
+  background: var(--color-chalk);
+  padding: clamp(4rem, 10vw, 9rem) clamp(1.5rem, 5vw, 5rem);
+}
+
+.head {
+  max-width: 1300px;
+  margin: 0 auto 3rem;
+}
+
+.h2 {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 4rem);
+  margin: 0.5rem 0 0;
+  color: var(--color-slate);
+}
+
+.grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  background: var(--color-sand);
+  perspective: 800px;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.lg {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
+}
+
+.sm {
+  grid-column: span 1;
+}
+
+.tileFace {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  background-color: #efece6;
+  background-image: radial-gradient(circle at 20% 30%, #e1241c 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 60%, #1c1b1a 0 5px, transparent 6px),
+    radial-gradient(circle at 45% 80%, #8a8c8f 0 4px, transparent 5px),
+    radial-gradient(circle at 85% 25%, #e1241c 0 7px, transparent 8px),
+    radial-gradient(circle at 30% 70%, #b8bbbe 0 4px, transparent 5px);
+  background-size: 90px 90px, 70px 70px, 110px 110px, 80px 80px, 60px 60px;
+}
+
+.card:hover {
+  box-shadow: 0 20px 60px -20px rgba(225, 36, 28, 0.45);
+}
+
+.card:hover .tileFace {
+  transform: rotateY(15deg) scale(1.05);
+}
+
+.meta {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: linear-gradient(transparent, rgba(42, 38, 32, 0.75));
+  color: var(--color-chalk);
+}
+
+.name {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.sku {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lg {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .lg,
+  .sm {
+    grid-column: span 1;
+    aspect-ratio: 3 / 2;
+  }
+}

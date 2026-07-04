@@ -1,0 +1,137 @@
+.section {
+  background: var(--color-sand);
+  padding: clamp(4rem, 10vw, 9rem) clamp(1.5rem, 5vw, 5rem);
+}
+
+.head {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.h2 {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 4rem);
+  margin: 0.5rem 0 0;
+  color: var(--color-slate);
+}
+
+.timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 100%;
+}
+
+.step {
+  position: relative;
+  width: 50%;
+  padding: 2.5rem 3rem;
+  box-sizing: border-box;
+}
+
+.left {
+  left: 0;
+  text-align: right;
+}
+
+.right {
+  left: 50%;
+  text-align: left;
+}
+
+.dot {
+  position: absolute;
+  top: 3.2rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-clay);
+  border: 3px solid var(--color-sand);
+  z-index: 2;
+}
+
+.left .dot {
+  right: -8px;
+}
+
+.right .dot {
+  left: -8px;
+}
+
+.watermark {
+  position: absolute;
+  top: 0;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: clamp(4rem, 9vw, 8rem);
+  color: rgba(201, 123, 75, 0.12);
+  line-height: 1;
+  z-index: 0;
+}
+
+.left .watermark {
+  right: 3rem;
+}
+
+.right .watermark {
+  left: 3rem;
+}
+
+.stepCard {
+  position: relative;
+  z-index: 1;
+}
+
+.stepNum {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-clay);
+}
+
+.stepTitle {
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  margin: 0.4rem 0 0.6rem;
+  color: var(--color-slate);
+}
+
+.stepBody {
+  color: var(--color-cement);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+  .line {
+    left: 8px;
+  }
+  .step {
+    width: 100%;
+    left: 0 !important;
+    text-align: left !important;
+    padding-left: 2.5rem;
+    padding-right: 0;
+  }
+  .left .dot,
+  .right .dot {
+    left: 1px;
+    right: auto;
+  }
+  .left .watermark,
+  .right .watermark {
+    left: 2rem;
+    right: auto;
+  }
+}

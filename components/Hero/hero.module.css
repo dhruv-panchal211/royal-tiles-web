@@ -1,0 +1,197 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-chalk);
+}
+
+/* tiled floor in perspective (revealed in the final scroll phase) */
+.floorScene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  perspective: 1100px;
+  overflow: hidden;
+}
+
+.floor {
+  position: absolute;
+  left: 50%;
+  bottom: -32%;
+  width: 215%;
+  height: 185%;
+  transform: translateX(-50%) rotateX(57deg);
+  transform-origin: 50% 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 8px; /* grout lines */
+}
+
+.floorCell {
+  overflow: hidden;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(28, 27, 26, 0.08);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* depth haze toward the horizon */
+.floorFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--color-white) 30%,
+    rgba(255, 255, 255, 0.75) 42%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* the single animated mold tile, centred */
+.stageWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  perspective: 1100px; /* lets the finished tile "lay down" onto the floor */
+}
+
+.stage {
+  width: min(66vh, 80vw);
+  height: min(66vh, 80vw);
+  will-change: transform, opacity;
+}
+
+.moldSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* hand + jug pour overlay, sized to the tile stage */
+.handLayer {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(66vh, 80vw);
+  height: min(66vh, 80vw);
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.handSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.hand {
+  will-change: transform, opacity;
+}
+
+.stream {
+  will-change: transform, opacity;
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.since {
+  position: absolute;
+  top: clamp(1.5rem, 5vw, 4rem);
+  left: clamp(1.5rem, 5vw, 4rem);
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--color-clay);
+}
+
+.headline {
+  margin: 0;
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  line-height: 0.95;
+  color: var(--color-slate);
+  max-width: 14ch;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-right: 0.18em;
+}
+
+.word {
+  display: inline-block;
+  will-change: transform;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: clamp(1.5rem, 4vw, 3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-cement);
+}
+
+.cueText {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  animation: bob 1.8s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
