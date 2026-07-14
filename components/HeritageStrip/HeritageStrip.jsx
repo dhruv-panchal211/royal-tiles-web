@@ -6,16 +6,16 @@ import styles from './heritage.module.css';
 
 const STATS = [
   { value: 1938, label: 'Founded', suffix: '' },
-  { value: 85, label: 'Years crafting', suffix: '+' },
+  { value: 85, label: 'Years of craft', suffix: '+' },
   { value: 100, label: 'Handmade', suffix: '%' },
   { value: 0, label: 'Two ever alike', suffix: '∞', literal: true },
 ];
 
 const MARQUEE = [
-  '1938 · Founded',
-  '85+ Years · Crafting',
-  '100% · Handmade',
-  '∞ · Unique Tiles',
+  'Bespoke cement',
+  'Terrazzo surfaces',
+  'Poured by hand',
+  'Since 1938',
 ];
 
 export default function HeritageStrip() {
@@ -48,10 +48,15 @@ export default function HeritageStrip() {
 
   return (
     <section ref={ref} className={styles.strip}>
-      <div className={styles.marqueeTrack}>
+      <span className={styles.watermark} aria-hidden>
+        1938
+      </span>
+
+      <div className={styles.marqueeTrack} aria-hidden>
         {[...MARQUEE, ...MARQUEE].map((t, i) => (
           <span key={i} className={styles.marqueeItem}>
-            {t}
+            <em>{t}</em>
+            <img src="/tile-mold.svg" alt="" className={styles.marqueeTile} />
           </span>
         ))}
       </div>

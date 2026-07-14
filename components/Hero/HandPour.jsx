@@ -5,8 +5,8 @@ import styles from './hero.module.css';
 /**
  * Realistic-styled metal pouring ladle (a tapered steel can with a spout lip
  * and a long straight handle), tipped to pour a ribbon of pigment into the
- * mold. No hand. Metallic gradients, a specular highlight, a welded seam and
- * a soft cast shadow give it volume.
+ * mold. Metallic gradients, a specular highlight, a welded seam and a soft
+ * cast shadow give it volume.
  * Animated by the Hero scroll timeline (the whole .handLayer tips a little
  * deeper as it pours; [data-stream] grows as the pigment falls).
  */
@@ -42,9 +42,9 @@ export default function HandPour() {
             <stop offset="100%" stopColor="#41454B" />
           </radialGradient>
           <linearGradient id="stream" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#E1241C" />
-            <stop offset="50%" stopColor="#CE1B16" />
-            <stop offset="100%" stopColor="#A8120E" />
+            <stop offset="0%" stopColor="#C68A6E" />
+            <stop offset="50%" stopColor="#B57A5E" />
+            <stop offset="100%" stopColor="#96604A" />
           </linearGradient>
           <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="5" />
@@ -75,14 +75,14 @@ export default function HandPour() {
           <path
             d="M128 198 C 131 236, 148 282, 159 326"
             fill="none"
-            stroke="#F0524B"
+            stroke="#DDA98C"
             strokeWidth="2.5"
             strokeLinecap="round"
             opacity="0.7"
           />
-          <ellipse cx="158" cy="336" rx="13" ry="5" fill="#A8120E" opacity="0.65" />
-          <circle cx="169" cy="342" r="3.2" fill="#CE1B16" />
-          <circle cx="148" cy="344" r="2.6" fill="#CE1B16" />
+          <ellipse cx="158" cy="336" rx="13" ry="5" fill="#96604A" opacity="0.65" />
+          <circle cx="169" cy="342" r="3.2" fill="#B57A5E" />
+          <circle cx="148" cy="344" r="2.6" fill="#B57A5E" />
         </g>
 
         {/* long straight handle (behind the body) */}

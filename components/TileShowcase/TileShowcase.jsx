@@ -24,13 +24,11 @@ export default function TileShowcase() {
   return (
     <section className={styles.section}>
       <header className={styles.head}>
-        <span className="caption" style={{ color: 'var(--color-gold)' }}>
-          Each tile is unique
-        </span>
+        <span className={styles.kicker}>The archive — each tile is unique</span>
         <h2 className={styles.h2}>
           Nine tiles. One mold. <em>Nine stories.</em>
         </h2>
-        <p className={styles.hint}>Click a tile to look closer.</p>
+        <p className={styles.hint}>Click a tile to look closer</p>
       </header>
 
       <div className={styles.stage}>
@@ -50,7 +48,7 @@ export default function TileShowcase() {
               <button
                 key={i}
                 className={styles.mobileTile}
-                style={{ '--hue': `${(i * 41) % 360}deg` }}
+                style={{ '--hue': `${((i * 37) % 16) - 8}deg` }}
                 onClick={() => setSelected(i)}
               />
             ))}
@@ -73,7 +71,7 @@ export default function TileShowcase() {
             </button>
             <div
               className={styles.swatch}
-              style={{ '--hue': `${(selected * 41) % 360}deg` }}
+              style={{ '--hue': `${((selected * 37) % 16) - 8}deg` }}
             />
             <span className={styles.dCollection}>{d.collection}</span>
             <h3 className={styles.dName}>“{d.name}”</h3>

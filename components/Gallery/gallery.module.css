@@ -1,17 +1,48 @@
 .section {
-  background: var(--color-sand);
+  background: var(--color-white);
   padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 5vw, 5rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.head {
+  max-width: 940px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.kicker {
+  display: block;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--color-red);
+  margin-bottom: 1.5rem;
 }
 
 .quote {
-  max-width: 900px;
-  margin: 0 auto 4rem;
-  text-align: center;
+  position: relative;
+  margin: 0;
   font-family: var(--font-playfair), serif;
+  font-size: clamp(1.9rem, 4.2vw, 3.75rem);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.quote em {
   font-style: italic;
-  font-size: clamp(1.75rem, 4vw, 3.5rem);
-  line-height: 1.2;
-  color: var(--color-slate);
+  color: var(--color-red);
+}
+
+.quoteMark {
+  position: absolute;
+  top: -0.32em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.2em;
+  line-height: 1;
+  color: rgba(198, 138, 110, 0.18);
+  pointer-events: none;
 }
 
 .quote cite {
@@ -19,10 +50,10 @@
   margin-top: 1.5rem;
   font-family: var(--font-dm-mono), monospace;
   font-style: normal;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--color-cement);
+  letter-spacing: 0.25em;
+  color: var(--color-grey);
 }
 
 .grid {
@@ -36,26 +67,23 @@
   position: relative;
   margin: 0 0 1rem;
   break-inside: avoid;
-  border-radius: 12px;
+  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
 }
 
+/* real tile surface as the project image */
 .image {
   width: 100%;
   aspect-ratio: 1 / var(--ratio, 1);
-  background-color: #e9e5df;
-  background-image: radial-gradient(circle at 25% 30%, #e1241c 0 7px, transparent 8px),
-    radial-gradient(circle at 70% 65%, #1c1b1a 0 5px, transparent 6px),
-    radial-gradient(circle at 50% 85%, #8a8c8f 0 4px, transparent 5px),
-    radial-gradient(circle at 85% 25%, #b8bbbe 0 6px, transparent 7px),
-    linear-gradient(160deg, rgba(255, 255, 255, 0.25), transparent 60%);
-  background-size: 70px 70px, 90px 90px, 60px 60px, 80px 80px, 100% 100%;
-  transition: transform 0.6s ease;
+  background-image: url('/tile-filled.svg');
+  background-size: 130%;
+  background-position: center;
+  transition: transform 0.6s ease, background-size 0.6s ease;
 }
 
 .card:hover .image {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .overlay {
@@ -65,8 +93,8 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 1.25rem;
-  background: linear-gradient(transparent 40%, rgba(42, 38, 32, 0.82));
-  color: var(--color-chalk);
+  background: linear-gradient(transparent 35%, rgba(28, 27, 26, 0.82));
+  color: var(--color-white);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -75,17 +103,26 @@
   opacity: 1;
 }
 
+.pIndex {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.3rem;
+}
+
 .pName {
   font-family: var(--font-playfair), serif;
   font-style: italic;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
 }
 
 .pMeta {
   font-family: var(--font-dm-mono), monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--color-gold);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.85);
   margin-top: 0.25rem;
 }
 

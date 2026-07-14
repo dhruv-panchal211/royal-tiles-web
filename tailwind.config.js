@@ -8,20 +8,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        red: '#E1241C',
-        'red-deep': '#B5160F',
+        primary: '#C68A6E',
+        'primary-deep': '#A96F55', 'primary-soft': '#F0DED3',
         ink: '#1C1B1A',
         grey: '#8A8C8F',
         paper: '#F5F2ED',
         line: '#E6E1D9',
         /* legacy aliases mapped to the brand palette */
-        clay: '#E1241C',
+        red: '#C68A6E',
+        'red-deep': '#A96F55',
+        clay: '#C68A6E',
         sand: '#F5F2ED',
         slate: '#1C1B1A',
         chalk: '#FFFFFF',
         cement: '#8A8C8F',
         indigo: '#5B5F66',
-        gold: '#E1241C',
+        gold: '#C68A6E',
       },
       fontFamily: {
         display: ['var(--font-playfair)', 'serif'],

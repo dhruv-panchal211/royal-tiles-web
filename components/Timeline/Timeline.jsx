@@ -11,7 +11,7 @@ const STEPS = [
   { t: 'Backing Layer', d: 'A coarse mortar is added to give the tile its body and strength.' },
   { t: 'Hydraulic Press', d: '200 tonnes of pressure bond the layers into a single slab.' },
   { t: 'Curing', d: 'Tiles rest and cure slowly for up to four weeks.' },
-  { t: 'Honing & Polish', d: 'The surface is ground back until the aggregate reveals itself.' },
+  { t: 'Honing & Polish', d: 'The surface is ground back until the pattern reveals itself.' },
   { t: 'Inspection', d: 'Every tile is checked by eye. None is ever quite the same.' },
 ];
 
@@ -60,10 +60,10 @@ export default function Timeline() {
   return (
     <section ref={ref} className={styles.section}>
       <header className={styles.head}>
-        <span className="caption" style={{ color: 'var(--color-clay)' }}>
-          The Process
-        </span>
-        <h2 className={styles.h2}>Eight steps. Eighty-five years.</h2>
+        <span className={styles.kicker}>The process — start to finish</span>
+        <h2 className={styles.h2}>
+          Eight steps. <em>Eighty-five years.</em>
+        </h2>
       </header>
 
       <div className={styles.timeline}>
@@ -77,7 +77,7 @@ export default function Timeline() {
             ref={pathRef}
             d="M5,0 L5,1000"
             fill="none"
-            stroke="var(--color-clay)"
+            stroke="var(--color-red)"
             strokeWidth="2"
           />
         </svg>
@@ -87,12 +87,12 @@ export default function Timeline() {
             key={i}
             className={`${styles.step} ${i % 2 ? styles.right : styles.left}`}
           >
-            <span className={styles.dot} />
-            <span className={styles.watermark}>
+            <img src="/tile-filled.svg" alt="" className={styles.dot} />
+            <span className={styles.watermark} aria-hidden>
               {String(i + 1).padStart(2, '0')}
             </span>
             <div className={styles.stepCard}>
-              <span className={styles.stepNum}>Step {i + 1}</span>
+              <span className={styles.stepNum}>Step {i + 1} / 08</span>
               <h3 className={styles.stepTitle}>{s.t}</h3>
               <p className={styles.stepBody}>{s.d}</p>
             </div>

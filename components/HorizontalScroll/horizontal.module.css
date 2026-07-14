@@ -1,5 +1,5 @@
 .section {
-  background: var(--color-sand);
+  background: var(--color-white);
   overflow: hidden;
 }
 
@@ -11,6 +11,7 @@
 }
 
 .panel {
+  position: relative;
   width: 100vw;
   height: 100vh;
   flex: 0 0 100vw;
@@ -18,57 +19,68 @@
   align-items: center;
   justify-content: center;
   padding: clamp(2rem, 8vw, 8rem);
-  border-right: 1px solid rgba(42, 38, 32, 0.08);
+  border-right: 1px solid var(--color-line);
 }
 
 .panel:nth-child(even) {
-  background: var(--color-chalk);
+  background: var(--color-paper);
+}
+
+/* enormous editorial numeral bleeding off the panel edge */
+.bigNum {
+  position: absolute;
+  right: -0.06em;
+  bottom: -0.22em;
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  font-size: clamp(14rem, 38vh, 26rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(198, 138, 110, 0.25);
+  pointer-events: none;
+  user-select: none;
 }
 
 .panelInner {
   position: relative;
-  max-width: 640px;
+  max-width: 620px;
 }
 
-.num {
-  display: inline-block;
+.kicker {
+  display: block;
   font-family: var(--font-dm-mono), monospace;
-  font-size: clamp(4rem, 12vw, 10rem);
-  color: rgba(201, 123, 75, 0.14);
-  line-height: 1;
-  position: absolute;
-  top: -3rem;
-  left: -1rem;
-  z-index: 0;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--color-red);
+  margin-bottom: 1rem;
 }
 
 .title {
-  position: relative;
-  z-index: 1;
   font-family: var(--font-playfair), serif;
   font-style: italic;
   font-weight: 600;
   font-size: clamp(2rem, 4vw, 4rem);
   line-height: 1.05;
-  margin: 0 0 1.5rem;
-  color: var(--color-slate);
+  margin: 0 0 1.25rem;
+  color: var(--color-ink);
 }
 
 .body {
-  position: relative;
-  z-index: 1;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
-  color: var(--color-cement);
-  max-width: 42ch;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: var(--color-grey);
+  max-width: 44ch;
+  margin: 0;
 }
 
 /* ---- panel art ---- */
 .art {
   position: relative;
-  height: 180px;
+  height: 190px;
   margin-bottom: 2.5rem;
 }
 
+/* 01 — pigment heaps */
 .art_pigment {
   display: flex;
   align-items: flex-end;
@@ -83,7 +95,7 @@
   animation: rise 3s ease-in-out infinite;
 }
 .heap[data-i='0'] {
-  background: radial-gradient(circle at 50% 20%, #f0524b, #b5160f);
+  background: radial-gradient(circle at 50% 20%, #dda98c, #96604a);
 }
 .heap[data-i='1'] {
   background: radial-gradient(circle at 50% 20%, #b9bcbf, #6e7174);
@@ -106,48 +118,47 @@
   }
 }
 
-.art_pour::after {
-  content: '';
-  position: absolute;
-  inset: 0;
+/* 02 — the real mold filling with colour */
+.pourBox {
+  position: relative;
+  display: block;
   width: 180px;
   height: 180px;
-  border-radius: 12px;
-  border: 2px solid var(--color-clay);
-  background: radial-gradient(
-    circle at center,
-    var(--color-clay) 0%,
-    var(--color-clay) var(--p, 0%),
-    transparent var(--p, 0%)
-  );
-  animation: flood 3s ease-in-out infinite;
+}
+
+.pourBox img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pourFill {
+  clip-path: inset(100% 0 0 0);
+  animation: flood 3.5s ease-in-out infinite;
 }
 
 @keyframes flood {
   0% {
-    --p: 0%;
+    clip-path: inset(100% 0 0 0);
   }
   60%,
+  85% {
+    clip-path: inset(0 0 0 0);
+  }
   100% {
-    --p: 90%;
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
   }
 }
 
-.art_press {
+/* 03 — the press */
+.pressTile {
   width: 180px;
   height: 180px;
-}
-.art_press::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 180px;
-  height: 120px;
-  background: linear-gradient(135deg, #e1241c, #a8120e);
-  border-radius: 8px;
   transform-origin: bottom;
   animation: compress 2.4s ease-in-out infinite;
+  box-shadow: 0 18px 40px -18px rgba(28, 27, 26, 0.35);
 }
 
 @keyframes compress {
@@ -156,63 +167,65 @@
     transform: scaleY(1);
   }
   50% {
-    transform: scaleY(0.72);
+    transform: scaleY(0.82);
   }
 }
 
-.art_polish {
+/* 04 — polish sheen sweeping across the real tile */
+.polishBox {
+  position: relative;
+  display: block;
   width: 180px;
   height: 180px;
+  overflow: hidden;
 }
-.art_polish::after {
-  content: '';
+
+.polishBox img {
+  width: 100%;
+  height: 100%;
+}
+
+.sheen {
   position: absolute;
-  inset: 0;
-  width: 180px;
-  height: 180px;
-  border-radius: 8px;
-  background: linear-gradient(120deg, #d9d6d0 0%, #ffffff 50%, #d9d6d0 100%);
-  background-size: 300% 100%;
-  animation: sheen 3s linear infinite;
-  box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4);
+  top: -20%;
+  left: -60%;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.75),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: sweep 2.8s ease-in-out infinite;
 }
 
-@keyframes sheen {
-  from {
-    background-position: 200% 0;
+@keyframes sweep {
+  0% {
+    left: -60%;
   }
-  to {
-    background-position: -100% 0;
+  60%,
+  100% {
+    left: 130%;
   }
 }
 
+/* 05 — nine unique tiles */
 .art_grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 180px;
-  height: 180px;
+  gap: 6px;
+  width: 190px;
+  height: 190px;
 }
 
 .gridTile {
-  border-radius: 4px;
-  background: var(--color-red);
-  background-image: radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.6) 2px,
-      transparent 3px
-    ),
-    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.4) 2px, transparent 3px);
+  width: 100%;
+  height: 100%;
   transition: transform 0.4s ease;
 }
 
-.gridTile:nth-child(3n + 2) {
-  background: var(--color-grey);
-}
-.gridTile:nth-child(3n) {
-  background: var(--color-ink);
-}
-
 .gridTile:hover {
-  transform: rotate(8deg) scale(1.08);
+  transform: rotate(6deg) scale(1.08);
 }

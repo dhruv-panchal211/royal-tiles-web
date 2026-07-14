@@ -2,7 +2,7 @@
 <style>
   #strokes path { stroke: #1C1B1A; stroke-opacity: 0.4; }
   [data-region-id="region-1"] { fill: #D9D6D0; }
-  [data-region-id="region-3"] { fill: #E1241C; }
+  [data-region-id="region-3"] { fill: #C68A6E; }
   .pour-bg { fill: #F5F2ED; }
 </style>
 <rect class="pour-bg" x="0" y="0" width="120" height="119"/>

@@ -6,30 +6,27 @@
   background-color: var(--color-chalk);
 }
 
-/* tiled floor in perspective (revealed in the final scroll phase) */
+/* full-bleed tiled floor (revealed tile by tile in the final phase) */
 .floorScene {
   position: absolute;
   inset: 0;
   z-index: 0;
-  perspective: 1100px;
   overflow: hidden;
+  will-change: transform;
 }
 
 .floor {
   position: absolute;
-  left: 50%;
-  bottom: -32%;
-  width: 215%;
-  height: 185%;
-  transform: translateX(-50%) rotateX(57deg);
-  transform-origin: 50% 100%;
+  inset: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 1fr;
-  gap: 8px; /* grout lines */
+  /* column count is set at mount from the viewport (square natural tiles) */
+  grid-template-columns: repeat(8, 1fr);
+  align-content: start;
+  gap: 6px; /* grout lines */
 }
 
 .floorCell {
+  aspect-ratio: 1 / 1; /* tiles stay square — never stretched */
   overflow: hidden;
   background-size: 100% 100%;
   background-position: center;
@@ -38,19 +35,6 @@
   box-shadow: inset 0 0 0 1px rgba(28, 27, 26, 0.08);
   opacity: 0;
   will-change: transform, opacity;
-}
-
-/* depth haze toward the horizon */
-.floorFade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--color-white) 30%,
-    rgba(255, 255, 255, 0.75) 42%,
-    transparent 60%
-  );
-  pointer-events: none;
 }
 
 /* the single animated mold tile, centred */
@@ -62,7 +46,6 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  perspective: 1100px; /* lets the finished tile "lay down" onto the floor */
 }
 
 .stage {

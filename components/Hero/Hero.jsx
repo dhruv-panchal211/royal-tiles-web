@@ -11,17 +11,18 @@ const HEADLINE = [
   ['Different', 'Story.'],
 ];
 
-// 6x5 floor of finished tiles (laid in perspective) for the final phase
-const FLOOR_COLS = 6;
-const FLOOR_ROWS = 5;
-const FLOOR_CELLS = Array.from({ length: FLOOR_COLS * FLOOR_ROWS });
+// Floor tiles are always square, at their natural size (~TILE_SIZE px).
+// Column/row counts are derived from the viewport at mount so the grid
+// covers the whole hero without stretching any tile.
+const TILE_SIZE = 160;
+const TILE_GAP = 6;
 
 // Fills + pour clip injected into the fetched mold SVG.
 const SVG_INJECT = `
 <style>
   #strokes path { stroke: #1C1B1A; stroke-opacity: 0.45; }
   #poured [data-region-id="region-1"] { fill: #D9D6D0; }
-  #poured [data-region-id="region-3"] { fill: #E1241C; }
+  #poured [data-region-id="region-3"] { fill: #C68A6E; }
   #poured .pour-bg { fill: #F5F2ED; }
 </style>
 <defs>
@@ -34,6 +35,7 @@ export default function Hero() {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
   const gridRef = useRef(null);
+  const pourRectRef = useRef(null);
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -42,8 +44,9 @@ export default function Hero() {
     let ctx;
     let cancelled = false;
 
-    async function build() {
-      // 1. load the regionized mold SVG and prepare it for pouring
+    // Load the regionized mold SVG and prepare it for pouring. Runs async;
+    // the (already-created) timeline drives the pour rect via pourRectRef.
+    async function loadMold() {
       let svgText = '';
       try {
         const res = await fetch('/tile-mold.svg');
@@ -76,19 +79,59 @@ export default function Hero() {
         regions.insertBefore(bg, regions.firstChild);
       }
 
-      const pourRect = svg.querySelector('#pourRect');
+      pourRectRef.current = svg.querySelector('#pourRect');
 
       // reduced motion: show a finished tile, no scroll choreography
-      if (reduced) {
-        if (pourRect) {
-          pourRect.setAttribute('y', '0');
-          pourRect.setAttribute('height', '119');
-        }
-        gsap.set(`.${styles.word}`, { yPercent: 0, opacity: 1 });
-        gsap.set(`.${styles.handLayer}`, { autoAlpha: 0 });
-        return;
+      if (reduced && pourRectRef.current) {
+        pourRectRef.current.setAttribute('y', '0');
+        pourRectRef.current.setAttribute('height', '119');
       }
+    }
 
+    loadMold();
+
+    if (reduced) {
+      gsap.set(`.${styles.word}`, { yPercent: 0, opacity: 1 });
+      gsap.set(`.${styles.handLayer}`, { autoAlpha: 0 });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    // Build the floor grid imperatively so the tiles are always square at
+    // their natural size: column/row counts come from the viewport.
+    const secW = sectionRef.current.offsetWidth;
+    const secH = sectionRef.current.offsetHeight;
+    const cols = Math.max(3, Math.round(secW / TILE_SIZE));
+    const size = (secW - (cols - 1) * TILE_GAP) / cols;
+    const rows = Math.ceil((secH + TILE_GAP) / (size + TILE_GAP));
+    // centre-ish cell of the visible rows — where the tile lands
+    const visRows = Math.max(1, Math.round(secH / (size + TILE_GAP)));
+    const LAND_INDEX =
+      Math.floor((visRows - 1) / 2) * cols + Math.floor((cols - 1) / 2);
+
+    const floorEl = gridRef.current;
+    floorEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    floorEl.innerHTML = '';
+    for (let i = 0; i < cols * rows; i++) {
+      const d = document.createElement('div');
+      d.className = styles.floorCell;
+      d.style.backgroundImage = 'url(/tile-filled.svg)';
+      // the landing cell stays unfiltered so the arriving tile crossfades
+      // into it seamlessly
+      if (i !== LAND_INDEX) {
+        d.style.filter = `hue-rotate(${((i * 31) % 12) - 6}deg) brightness(${
+          0.94 + ((i * 13) % 5) * 0.03
+        })`;
+      }
+      floorEl.appendChild(d);
+    }
+
+    // IMPORTANT: the pinned timeline is created synchronously on mount so
+    // ScrollTrigger registers this section's pin BEFORE the later sections
+    // compute their positions. (Creating it after the SVG fetch left every
+    // other trigger ~1 viewport early — they slid over the hero mid-pin.)
+    {
       ctx = gsap.context(() => {
         // intro: headline words rise in
         gsap.from(`.${styles.word}`, {
@@ -100,7 +143,14 @@ export default function Hero() {
           delay: 0.2,
         });
 
-        gsap.set(gridRef.current.children, { autoAlpha: 0 });
+        const cells = gridRef.current.children;
+        gsap.set(cells, {
+          autoAlpha: 0,
+          scale: 0.6,
+          transformOrigin: '50% 50%',
+        });
+        // the landing cell must match the arriving tile exactly — no pop
+        gsap.set(cells[LAND_INDEX], { scale: 1 });
         gsap.set(`.${styles.handLayer}`, {
           yPercent: -65,
           autoAlpha: 0,
@@ -113,18 +163,23 @@ export default function Hero() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: '+=260%',
+            end: '+=300%',
             pin: true,
             scrub: 1.2,
             invalidateOnRefresh: true,
           },
         });
 
-        // Phase 1 — a hand tilts the jug and pours pigment into the mold
-        // hand swings down into frame and tips to pour
+        // Phase 1 — the ladle tips in and pours pigment into the mold
         tl.to(
           `.${styles.handLayer}`,
-          { yPercent: 0, autoAlpha: 1, rotation: 2, ease: 'power2.out', duration: 1 },
+          {
+            yPercent: 0,
+            autoAlpha: 1,
+            rotation: 2,
+            ease: 'power2.out',
+            duration: 1,
+          },
           0
         );
         // the stream of pigment falls from the spout
@@ -134,12 +189,25 @@ export default function Hero() {
           0.7
         );
         // pigment floods the mold from the bottom up, in time with the pour
+        // (driven through a proxy so the tween exists before the SVG loads)
+        const pour = { v: 0 };
         tl.to(
-          pourRect,
-          { attr: { y: 0, height: 119 }, ease: 'power1.inOut', duration: 4 },
+          pour,
+          {
+            v: 1,
+            ease: 'power1.inOut',
+            duration: 4,
+            onUpdate: () => {
+              const r = pourRectRef.current;
+              if (r) {
+                r.setAttribute('y', String(119 * (1 - pour.v)));
+                r.setAttribute('height', String(119 * pour.v));
+              }
+            },
+          },
           0.9
         );
-        // jug tips deeper as it empties, then eases back — the pouring gesture
+        // ladle tips deeper as it empties, then eases back — the pouring gesture
         tl.to(
           `.${styles.handLayer}`,
           { rotation: 7, ease: 'sine.inOut', duration: 2.4 },
@@ -161,10 +229,10 @@ export default function Hero() {
           { opacity: 0, duration: 1, ease: 'none' },
           0
         );
-        // stream tapers off and the hand lifts away once the tile is full
+        // stream tapers off and the ladle lifts away once the tile is full
         tl.to(
           '[data-stream]',
-          { scaleY: 0.15, autoAlpha: 0, ease: 'power1.in', duration: 0.6 },
+          { scaleY: 0.12, autoAlpha: 0, ease: 'power1.in', duration: 0.6 },
           4.5
         );
         tl.to(
@@ -182,48 +250,58 @@ export default function Hero() {
         // Phase 2 — hold the completed tile a beat
         tl.to({}, { duration: 1 });
 
-        // Phase 3 — the finished tile lays down onto a floor of tiles,
-        // showing how they combine when installed
+        // Phase 3 — the finished tile shrinks into its place on the floor,
+        // becoming one of the tiles; the rest are laid in one by one
+        const landCell = cells[LAND_INDEX];
         tl.to(
           stageRef.current,
           {
-            rotationX: 56,
-            scale: 0.5,
-            yPercent: 14,
+            x: () =>
+              landCell.offsetLeft +
+              landCell.offsetWidth / 2 -
+              sectionRef.current.offsetWidth / 2,
+            y: () =>
+              landCell.offsetTop +
+              landCell.offsetHeight / 2 -
+              sectionRef.current.offsetHeight / 2,
+            scaleX: () => landCell.offsetWidth / stageRef.current.offsetWidth,
+            scaleY: () =>
+              landCell.offsetHeight / stageRef.current.offsetHeight,
             ease: 'power2.inOut',
-            duration: 3,
+            duration: 2.5,
           },
           'floor'
         );
-        tl.to(stageRef.current, { autoAlpha: 0, duration: 0.8 }, 'floor+=2.1');
-        // floor tiles appear front-to-back, like a floor being laid
+        // crossfade: the arriving tile becomes the landing floor tile
+        tl.to(landCell, { autoAlpha: 1, duration: 0.25 }, 'floor+=2.35');
+        tl.to(stageRef.current, { autoAlpha: 0, duration: 0.25 }, 'floor+=2.5');
+        // remaining tiles pop in one by one, radiating out from the laid tile
         tl.to(
-          gridRef.current.children,
+          cells,
           {
             autoAlpha: 1,
-            ease: 'power2.out',
-            duration: 1.6,
+            scale: 1,
+            ease: 'back.out(1.6)',
+            duration: 0.4,
             stagger: {
-              each: 0.09,
-              grid: [FLOOR_ROWS, FLOOR_COLS],
-              axis: 'y',
-              from: 'end',
+              each: 0.22,
+              grid: [rows, cols],
+              from: LAND_INDEX,
             },
           },
-          'floor+=1'
+          'floor+=2.7'
         );
-        // the laid floor settles gently (scale the scene wrapper so the
-        // floor's own CSS perspective transform is never touched)
+        // the finished floor settles gently
         tl.fromTo(
           `.${styles.floorScene}`,
-          { scale: 1.05 },
+          { scale: 1.04 },
           { scale: 1, ease: 'power1.out', duration: 2, immediateRender: false },
-          'floor+=1'
+          'floor+=2.9'
         );
+        // hold the finished floor on screen before the section unpins
+        tl.to({}, { duration: 2 });
       }, sectionRef);
     }
-
-    build();
 
     return () => {
       cancelled = true;
@@ -233,23 +311,10 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className={styles.hero}>
-      {/* tiled floor in perspective (revealed last) */}
+      {/* full-bleed tiled floor — square cells are built at mount so every
+          tile keeps its natural size (revealed last, tile by tile) */}
       <div className={styles.floorScene} aria-hidden>
-        <div ref={gridRef} className={styles.floor}>
-          {FLOOR_CELLS.map((_, i) => (
-            <div
-              key={i}
-              className={styles.floorCell}
-              style={{
-                backgroundImage: 'url(/tile-filled.svg)',
-                filter: `hue-rotate(${((i * 31) % 12) - 6}deg) brightness(${
-                  0.94 + ((i * 13) % 5) * 0.03
-                })`,
-              }}
-            />
-          ))}
-        </div>
-        <div className={styles.floorFade} />
+        <div ref={gridRef} className={styles.floor} />
       </div>
 
       {/* the animated mold / single tile */}
@@ -257,7 +322,7 @@ export default function Hero() {
         <div ref={stageRef} className={styles.stage} aria-hidden />
       </div>
 
-      {/* craftsman's hand pouring pigment */}
+      {/* metal ladle pouring pigment */}
       <HandPour />
 
       <div className={styles.content}>

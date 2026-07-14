@@ -3,19 +3,23 @@
 @tailwind utilities;
 
 :root {
-  /* Brand palette — from the Royal Tiles logo */
-  --color-red: #e1241c; /* primary accent */
-  --color-red-deep: #b5160f; /* hover / pressed */
+  /* Brand palette — pastel clay with paper neutrals, ink type on blush */
+  --color-primary: #c68a6e; /* muted clay accent */
+  --color-primary-deep: #a96f55; /* hover / pressed */
+  --color-primary-soft: #f0ded3; /* pale blush — large band surfaces */
   --color-ink: #1c1b1a; /* charcoal text (used instead of pure black) */
   --color-grey: #8a8c8f; /* secondary text */
   --color-paper: #f5f2ed; /* soft light section background */
   --color-white: #ffffff;
   --color-line: #e6e1d9; /* hairline borders */
 
-  /* Legacy token names mapped onto the new brand palette so every component
-     that references them picks up the new theme automatically. */
-  --color-clay: var(--color-red);
-  --color-gold: var(--color-red);
+  /* Legacy token names mapped onto the palette so every component that
+     references them picks up the theme automatically. Accent text uses the
+     deeper clay so it keeps contrast on white. */
+  --color-red: var(--color-primary-deep);
+  --color-red-deep: var(--color-primary-deep);
+  --color-clay: var(--color-primary-deep);
+  --color-gold: var(--color-primary-deep);
   --color-slate: var(--color-ink);
   --color-sand: var(--color-paper);
   --color-chalk: var(--color-white);

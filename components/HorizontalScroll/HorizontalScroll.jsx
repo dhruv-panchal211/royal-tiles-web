@@ -8,7 +8,7 @@ const PANELS = [
   {
     n: '01',
     title: 'It starts with raw pigment.',
-    body: 'Terracotta red. Chrome yellow. Oxide black. Mineral colour, measured by eye and by memory.',
+    body: 'Soft clay. Zinc grey. Bone white. Mineral colour, measured by eye and by memory.',
     art: 'pigment',
   },
   {
@@ -26,7 +26,7 @@ const PANELS = [
   {
     n: '04',
     title: 'Cured. Polished. Unique.',
-    body: 'Weeks of patience, then the surface is honed until the stone begins to shine.',
+    body: 'Weeks of patience, then the surface is honed until the cement begins to shine.',
     art: 'polish',
   },
   {
@@ -89,23 +89,49 @@ export default function HorizontalScroll() {
       <div ref={trackRef} className={styles.track}>
         {PANELS.map((p, i) => (
           <article key={i} className={styles.panel}>
+            <span className={styles.bigNum} aria-hidden>
+              {p.n}
+            </span>
+
             <div className={styles.panelInner}>
               <div className={`${styles.art} ${styles['art_' + p.art]}`}>
-                {p.art === 'grid' &&
-                  Array.from({ length: 9 }).map((_, k) => (
-                    <span
-                      key={k}
-                      className={styles.gridTile}
-                      style={{ '--h': `${(k * 41) % 360}deg` }}
-                    />
-                  ))}
                 {p.art === 'pigment' &&
                   Array.from({ length: 3 }).map((_, k) => (
                     <span key={k} className={styles.heap} data-i={k} />
                   ))}
+                {p.art === 'pour' && (
+                  <span className={styles.pourBox}>
+                    <img src="/tile-mold.svg" alt="" className={styles.pourMold} />
+                    <img src="/tile-filled.svg" alt="" className={styles.pourFill} />
+                  </span>
+                )}
+                {p.art === 'press' && (
+                  <img src="/tile-filled.svg" alt="" className={styles.pressTile} />
+                )}
+                {p.art === 'polish' && (
+                  <span className={styles.polishBox}>
+                    <img src="/tile-filled.svg" alt="" />
+                    <span className={styles.sheen} />
+                  </span>
+                )}
+                {p.art === 'grid' &&
+                  Array.from({ length: 9 }).map((_, k) => (
+                    <img
+                      key={k}
+                      src="/tile-filled.svg"
+                      alt=""
+                      className={styles.gridTile}
+                      style={{
+                        filter: `hue-rotate(${((k * 37) % 14) - 7}deg) brightness(${
+                          0.92 + (k % 4) * 0.04
+                        })`,
+                      }}
+                    />
+                  ))}
               </div>
-              <span className={styles.num} data-reveal>
-                {p.n}
+
+              <span className={styles.kicker} data-reveal>
+                The craft — {p.n} / 05
               </span>
               <h3 className={styles.title} data-reveal>
                 {p.title}
